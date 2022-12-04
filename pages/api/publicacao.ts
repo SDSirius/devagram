@@ -2,10 +2,11 @@ import type { NextApiResponse } from "next";
 import type { RespostaPadraoMSG } from "../../types/RespostaPadraoMSG";
 import nc from 'next-connect';
 import { upload, uploadImagesCosmic } from '../../services/uploadImagesCosmic';
-import { conectarMongoDB } from '../../MIddlewares/conectarMongoDB'
-import { validarTokenJWT } from '../../MIddlewares/validarTokenJWT'
+import { conectarMongoDB } from '../../MIddlewares/conectarMongoDB';
+import { validarTokenJWT } from '../../MIddlewares/validarTokenJWT';
 import { UserModel } from '../../models/UserModel';
-import { PublicacaoModel} from '../../models/PublicacaoModel'
+import { PublicacaoModel} from '../../models/PublicacaoModel';
+import { politicaCORS } from "../../MIddlewares/politicaCORS";
 
 const handler = nc()
     .use(upload.single('file'))
@@ -55,4 +56,4 @@ export const config = {
     }
 }
 
-export default validarTokenJWT(conectarMongoDB(handler));
+export default politicaCORS(validarTokenJWT(conectarMongoDB(handler)));

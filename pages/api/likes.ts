@@ -4,6 +4,7 @@ import { validarTokenJWT } from "../../MIddlewares/validarTokenJWT";
 import { conectarMongoDB } from "../../MIddlewares/conectarMongoDB";
 import { UserModel } from "../../models/UserModel";
 import { PublicacaoModel } from "../../models/PublicacaoModel";
+import { politicaCORS } from "../../MIddlewares/politicaCORS";
 
 const likesEndpoint = async(req : NextApiRequest, res : NextApiResponse<RespostaPadraoMSG | any[]>) => {
     
@@ -40,4 +41,4 @@ const likesEndpoint = async(req : NextApiRequest, res : NextApiResponse<Resposta
         return res.status(500).json({erro : 'Ocorreu um erro ao dar like!'});
     }
 }
-export default validarTokenJWT(conectarMongoDB(likesEndpoint));
+export default politicaCORS(validarTokenJWT(conectarMongoDB(likesEndpoint)));

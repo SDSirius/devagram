@@ -5,6 +5,7 @@ import type { LoginResposta } from '../../types/LoginResposta';
 import md5 from 'md5';
 import { UserModel } from '../../models/UserModel';
 import jwt from 'jsonwebtoken';
+import { politicaCORS } from "../../MIddlewares/politicaCORS";
 
 
 const endpointLogin = async (
@@ -36,4 +37,4 @@ const endpointLogin = async (
     }
     return res.status(405).json({erro : 'Você não tem permissão para isso no momento!'});
 }
-export default conectarMongoDB(endpointLogin);
+export default politicaCORS(conectarMongoDB(endpointLogin));
