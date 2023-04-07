@@ -15,7 +15,7 @@ async(req : NextApiRequest, res : NextApiResponse<RespostaPadraoMSG>) =>{
             return handler(req,res);
 
         }catch(e){
-            console.log('Erro ao tratar a politica de CORS: '+ e);
+            console.log('Erro ao tratar a politica de CORS: ', e);
             return res.status(500).json({erro : 'Erro ao tratar a politica de CORS'});
 
         }

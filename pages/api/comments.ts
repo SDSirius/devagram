@@ -1,4 +1,4 @@
-import type { NextApiRequest, NextApiResponse, NextApiHandler } from "next";
+import type { NextApiRequest, NextApiResponse } from "next";
 import type { RespostaPadraoMSG } from '../../types/RespostaPadraoMSG'
 import { validarTokenJWT } from "../../MIddlewares/validarTokenJWT";
 import { conectarMongoDB } from "../../MIddlewares/conectarMongoDB";
