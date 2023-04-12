@@ -26,6 +26,10 @@ const pesquisaEndpoint = async(req : NextApiRequest, res : NextApiResponse<Respo
                         {email : {$regex : filtro, $options : 'i'}}]
                 });
 
+                usuariosEncontrados.forEach(userFound => {
+                    userFound.senha = null
+                });
+
                 return res.status(200).json(usuariosEncontrados);
             }
             

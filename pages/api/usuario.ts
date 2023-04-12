@@ -41,7 +41,7 @@ const handler = nc ()
         try{
             const {userId} = req?.query;
             const usuario = await UserModel.findById(userId);
-            usuario.senha = null
+            usuario.senha = null;
             return res.status(200).json(usuario);
         }catch(e){
             console.log(e);
