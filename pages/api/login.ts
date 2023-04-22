@@ -33,7 +33,7 @@ const endpointLogin = async (
                 email : userFound.email,
                 token});
         }
-        return res.status(400).json({erro : 'Login ouy senha inválidos'});
+        return res.status(400).json({erro : 'Login ou senha inválidos'});
     }
     return res.status(405).json({erro : 'Você não tem permissão para isso no momento!'});
 }

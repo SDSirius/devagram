@@ -18,7 +18,7 @@ const handler = nc ()
                 return res.status(400).json({erro : 'Usuario nao encontrado'});
             }
 
-            const {nome} = req.body;
+            const {nome} = req?.body;
             if(nome || nome.length > 2){
                 usuario.nome = nome;
             }
@@ -34,10 +34,10 @@ const handler = nc ()
             return res.status(200).json({msg : 'Usuário Atualizado'});
         }catch(e){
             console.log(e);
-            return res.status(400).json({erro : 'nao foi possivel atualizar o usuario ' + e});
+            return res.status(400).json({erro : 'Nao foi possivel atualizar o usuario ' + e});
         }
     })
-    .get(async (req : NextApiRequest, res : NextApiResponse<RespostaPadraoMSG | any>) =>{
+    .get(async (req : NextApiRequest, res : NextApiResponse<RespostaPadraoMSG | any>) => {
         try{
             const {userId} = req?.query;
             const usuario = await UserModel.findById(userId);
