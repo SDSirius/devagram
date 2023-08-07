@@ -4,6 +4,7 @@ import { validarTokenJWT } from "../../MIddlewares/validarTokenJWT";
 import { conectarMongoDB } from "../../MIddlewares/conectarMongoDB";
 import { UserModel } from "../../models/UserModel";
 import { politicaCORS } from "../../MIddlewares/politicaCORS";
+import { FollowingModel } from "../../models/FollowingModel";
 
 const pesquisaEndpoint = async(req : NextApiRequest, res : NextApiResponse<RespostaPadraoMSG | any[]>) => {
     try{
@@ -13,8 +14,25 @@ const pesquisaEndpoint = async(req : NextApiRequest, res : NextApiResponse<Respo
                 if (!usuarioEncontrado){
                     return res.status(400).json({erro : 'Usuario Não encontrado'});
                 }
-                usuarioEncontrado.senha = null;
-                return res.status(200).json(usuarioEncontrado);
+
+                const user = {
+                    senha:null,
+                    followingThisUser:false,
+                    nome: usuarioEncontrado.nome,
+                    email: usuarioEncontrado.email,
+                    _id: usuarioEncontrado._id,
+                    avatar: usuarioEncontrado.avatar,
+                    followers: usuarioEncontrado.followers,
+                    following: usuarioEncontrado.following,
+                    posts: usuarioEncontrado.publicacoes,
+                } as any;
+                
+                const followingThisUser = await FollowingModel.find({myId: req?.query?.userId, followedUserId: usuarioEncontrado._id });
+                if (followingThisUser && followingThisUser.length > 0){
+                    user.followingThisUser = true;
+                }
+
+                return res.status(200).json(user);
             }else{
                 const {filtro} = req.query;
                 if (!filtro || filtro.length < 2){

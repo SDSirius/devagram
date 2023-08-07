@@ -1,21 +1,15 @@
 import multer from "multer";
-import cosmicjs from 'cosmicjs';
+import { createBucketClient } from '@cosmicjs/sdk';
 
-const {CHAVE_GRAVACAO_AVATARES,
-    CHAVE_GRAVACAO_PUBLICACOES, 
-    BUCKETS_AVATARES,
-    BUCKETS_PUBLICACOES } = process.env;
+const {BUCKET_SLUG,
+    READ_KEY, 
+    WRITE_KEY } = process.env;
 
-const Cosmic = cosmicjs()
-const bucketAvatares = Cosmic.bucket({
-    slug : BUCKETS_AVATARES,
-    write_key : CHAVE_GRAVACAO_AVATARES
-});
-
-const bucketPublicacoes = Cosmic.bucket({
-    slug : BUCKETS_PUBLICACOES,
-    write_key : CHAVE_GRAVACAO_PUBLICACOES
-});
+    const bucketDaniGram = createBucketClient({
+        bucketSlug: BUCKET_SLUG as string,
+        readKey: READ_KEY as string,
+        writeKey: WRITE_KEY as string,
+      });
 
 const storage = multer.memoryStorage();
 const upload = multer({storage : storage});
@@ -34,11 +28,22 @@ const uploadImagesCosmic = async(req : any) =>{
             buffer : req.file.buffer
         }
         
-        if (req.url && req.url.includes('publicacao')){
-            return await bucketPublicacoes.addMedia({media : media_object});
-        }else{
-            return await bucketAvatares.addMedia({media : media_object});
-        }
+        if (req.url && req.url.includes("publicacao")) {
+            return await bucketDaniGram.media.insertOne({
+              media: media_object,
+              folder: "publicacao",
+            });
+          } else if (req.url && req.url.includes("usuario")) {
+            return await bucketDaniGram.media.insertOne({
+              media: media_object,
+              folder: "avatar",
+            });
+          } else {
+            return await bucketDaniGram.media.insertOne({
+              media: media_object,
+              folder: "stories",
+            });
+          }
     }
 }
 
