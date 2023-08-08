@@ -16,15 +16,15 @@ const pesquisaEndpoint = async(req : NextApiRequest, res : NextApiResponse<Respo
                 }
 
                 const user = {
-                    senha:null,
-                    followingThisUser:false,
-                    nome: usuarioEncontrado.nome,
-                    email: usuarioEncontrado.email,
-                    _id: usuarioEncontrado._id,
-                    avatar: usuarioEncontrado.avatar,
-                    followers: usuarioEncontrado.followers,
-                    following: usuarioEncontrado.following,
-                    posts: usuarioEncontrado.publicacoes,
+                    senha:null, //
+                    followingThisUser:false, // 
+                    nome: usuarioEncontrado.nome, //
+                    email: usuarioEncontrado.email, //
+                    _id: usuarioEncontrado._id, //
+                    avatar: usuarioEncontrado.avatar, // 
+                    followers: usuarioEncontrado.seguidores,
+                    following: usuarioEncontrado.seguindo,
+                    posts: usuarioEncontrado.publicacoes, //
                 } as any;
                 
                 const followingThisUser = await FollowingModel.find({myId: req?.query?.userId, followedUserId: usuarioEncontrado._id });
