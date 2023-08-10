@@ -5,7 +5,7 @@ const {BUCKET_SLUG,
     READ_KEY, 
     WRITE_KEY } = process.env;
 
-    const bucketDaniGram = createBucketClient({
+    const bucketdanigram = createBucketClient({
         bucketSlug: BUCKET_SLUG as string,
         readKey: READ_KEY as string,
         writeKey: WRITE_KEY as string,
@@ -29,19 +29,14 @@ const uploadImagesCosmic = async(req : any) =>{
         }
         
         if (req.url && req.url.includes("publicacao")) {
-            return await bucketDaniGram.media.insertOne({
+            return await bucketdanigram.media.insertOne({
               media: media_object,
-              folder: "publicacao",
-            });
-          } else if (req.url && req.url.includes("usuario")) {
-            return await bucketDaniGram.media.insertOne({
-              media: media_object,
-              folder: "avatar",
+              folder: "publicacao"
             });
           } else {
-            return await bucketDaniGram.media.insertOne({
+            return await bucketdanigram.media.insertOne({
               media: media_object,
-              folder: "stories",
+              folder: "avatar"
             });
           }
     }
