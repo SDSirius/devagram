@@ -24,22 +24,23 @@ const uploadImagesCosmic = async(req : any) =>{
         }
 
         const media_object = {
-            originalname: req.file.originalname,
-            buffer : req.file.buffer
-        }
-        
+          originalname: req.file.originalname,
+          buffer: req.file.buffer,
+        };
+        // const media_object = req.files[0];
         if (req.url && req.url.includes("publicacao")) {
-            return await bucketdanigram.media.insertOne({
-              media: media_object,
-              folder: "publicacao"
-            });
+          return await bucketdanigram.media.insertOne({
+            media: media_object,
+            folder: "publicacao",
+          });
+
           } else {
             return await bucketdanigram.media.insertOne({
               media: media_object,
-              folder: "avatar"
+              folder: "avatar",
             });
           }
     }
-}
+};
 
 export{upload, uploadImagesCosmic};
