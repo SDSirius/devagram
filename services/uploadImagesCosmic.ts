@@ -1,9 +1,7 @@
 import multer from "multer";
 import { createBucketClient } from '@cosmicjs/sdk';
 
-const {BUCKET_SLUG,
-    READ_KEY, 
-    WRITE_KEY } = process.env;
+const {BUCKET_SLUG, READ_KEY, WRITE_KEY } = process.env;
 
     const bucketdanigram = createBucketClient({
         bucketSlug: BUCKET_SLUG as string,
@@ -34,12 +32,12 @@ const uploadImagesCosmic = async(req : any) =>{
             folder: "publicacao",
           });
 
-          } else {
+        } else {
             return await bucketdanigram.media.insertOne({
               media: media_object,
               folder: "avatar",
             });
-          }
+        }
     }
 };
 
