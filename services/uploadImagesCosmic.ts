@@ -25,7 +25,7 @@ const uploadImagesCosmic = async(req : any) =>{
           originalname: req.file.originalname,
           buffer: req.file.buffer,
         };
-        // const media_object = req.files[0];
+        
         if (req.url && req.url.includes("publicacao")) {
           return await bucketdanigram.media.insertOne({
             media: media_object,
