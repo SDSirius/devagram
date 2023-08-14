@@ -10,8 +10,6 @@
   },
   "dependencies": {
     "@cosmicjs/sdk": "^1.0.9",
-    "cosmic": "^0.0.0",
-    "cosmicjs": "^4.3.1",
     "jsonwebtoken": "^9.0.1",
     "md5": "^2.3.0",
     "moment": "^2.29.4",
