@@ -12,46 +12,46 @@ const followEndpoint = async (req : NextApiRequest, res : NextApiResponse<Respos
         if(req.method ==='PUT'){
 
             const {userId, id} = req?.query;
-            const loggedUser = await UserModel.findById(userId);
-            if(!loggedUser){
+            const usuarioLogado = await UserModel.findById(userId);
+            if(!usuarioLogado){
                 return res.status(400).json({erro : 'Login de usuário nao reconhecido'});    
             }
 
-            const userToBeFollowed = await UserModel.findById(id);
-            if(!userToBeFollowed){
+            const usuarioASerSeguido = await UserModel.findById(id);
+            if(!usuarioASerSeguido){
                 return res.status(400).json({erro : 'Usuário destino nao reconhecido'});
             }
 
-            const alreadyFollowing = await FollowingModel.find({myId : loggedUser._id, 
-                followedUserId : userToBeFollowed._id});
+            const euJaSigoEsseUsuario = await FollowingModel.find({usuarioId : usuarioLogado._id, 
+                usuarioSeguidoId : usuarioASerSeguido._id});
 
-            if(alreadyFollowing && alreadyFollowing.length > 0){
+            if(euJaSigoEsseUsuario && euJaSigoEsseUsuario.length > 0){
                 //verificar se esta seguindo no DB
-                alreadyFollowing.forEach( async( e : any) => await FollowingModel
+                euJaSigoEsseUsuario.forEach( async( e : any) => await FollowingModel
                 .findByIdAndDelete({_id : e._id}));
 
-                loggedUser.seguindo--;
-                await UserModel.findByIdAndUpdate({_id : loggedUser._id }, loggedUser);
+                usuarioLogado.seguindo--;
+                await UserModel.findByIdAndUpdate({_id : usuarioLogado._id }, usuarioLogado);
 
-                userToBeFollowed.seguidores--;
-                await UserModel.findByIdAndUpdate({_id : userToBeFollowed._id }, userToBeFollowed);
+                usuarioASerSeguido.seguidores--;
+                await UserModel.findByIdAndUpdate({_id : usuarioASerSeguido._id }, usuarioASerSeguido);
 
                 return res.status(200).json({msg : 'Unfollow com Sucesso'});
 
             }else{
 
-                const follower = {
-                    myId : loggedUser._id, 
-                    followedUserId : userToBeFollowed._id
+                const seguidor = {
+                    usuarioId : usuarioLogado._id, 
+                    usuarioSeguidoId : usuarioASerSeguido._id
                 };
                 
-                await FollowingModel.create(follower);
+                await FollowingModel.create(seguidor);
 
-                loggedUser.seguindo++;
-                await UserModel.findByIdAndUpdate({_id : loggedUser._id }, loggedUser);
+                usuarioLogado.seguindo++;
+                await UserModel.findByIdAndUpdate({_id : usuarioLogado._id }, usuarioLogado);
 
-                userToBeFollowed.seguidores++;
-                await UserModel.findByIdAndUpdate({_id : userToBeFollowed._id }, userToBeFollowed);
+                usuarioASerSeguido.seguidores++;
+                await UserModel.findByIdAndUpdate({_id : usuarioASerSeguido._id }, usuarioASerSeguido);
 
                 return res.status(200).json({msg : 'Follow Com Sucesso'});
             }

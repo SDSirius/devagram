@@ -16,7 +16,7 @@ const feedEndpoint = async (req : NextApiRequest, res : NextApiResponse<Resposta
                     return res.status(400).json({erro: 'Usuario Não encontrado!'});
                 }
                 const publicacoes =await PublicacaoModel
-                    .find({idUser : usuario._id})
+                    .find({idUsuario  : usuario._id})
                     .sort({data : -1});
                     
                 return res.status(200).json(publicacoes);
@@ -27,31 +27,31 @@ const feedEndpoint = async (req : NextApiRequest, res : NextApiResponse<Resposta
                     return res.status(400).json({erro: "Usuario nao encontrado. "});
                 }
 
-                const following = await FollowingModel.find({usuarioId: usuarioOn._id});
-                const followingIds = following.map(f => f.followedUserId);
+                const seguidores = await FollowingModel.find({userId: usuarioOn._id});
+                const seguidoresIds = seguidores.map(s => s.usuarioSeguidoId);
 
                 const publicacoes = await PublicacaoModel.find({
-                    $or: [ 
-                        {idUser : usuarioOn._id},
-                        {idUser : followingIds}                        
+                    $or : [
+                        {idUsuario : usuarioOn._id},
+                        {idUsuario : seguidoresIds}
                     ]
                 })
                 .sort({data: -1});
 
-                const resul = [];
+                const result  = [];
                 for (const publicacao of publicacoes) {
-                    const userPublicat = await UserModel.findById(publicacao.idUser);
-                    if(userPublicat){
-                        const ultVar = {...publicacao._doc, usuario : {
-                            nome : userPublicat.nome,
-                            avatar : userPublicat.avatar
+                    const usuarioDaPublicacao = await UserModel.findById(publicacao.idUsuario);
+                    if(usuarioDaPublicacao){
+                        const final = {...publicacao._doc, usuario : {
+                            nome : usuarioDaPublicacao.nome,
+                            avatar : usuarioDaPublicacao.avatar
                         }};
-                        resul.push(ultVar);
+                        result.push(final);
                     }
                     
                 }
                 
-                return res.status(200).json(resul);
+                return res.status(200).json(result);
             }
         }
         return res.status(405).json({erro: 'Método informado não é valido.'});

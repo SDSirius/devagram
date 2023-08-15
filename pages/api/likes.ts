@@ -6,7 +6,7 @@ import { UserModel } from "../../models/UserModel";
 import { PublicacaoModel } from "../../models/PublicacaoModel";
 import { politicaCORS } from "../../MIddlewares/politicaCORS";
 
-const likesEndpoint = async(req : NextApiRequest, res : NextApiResponse<RespostaPadraoMSG | any[]>) => {
+const likeEndpoint = async(req : NextApiRequest, res : NextApiResponse<RespostaPadraoMSG | any[]>) => {
     
     try{
         if(req.method === 'PUT'){
@@ -22,10 +22,10 @@ const likesEndpoint = async(req : NextApiRequest, res : NextApiResponse<Resposta
                 return res.status(400).json({erro : 'Usuário Não encontrado!'});
             }
 
-            const indexUserOnLikes = publicacao.likes.findIndex((e:any) => e.toString() ===usuario._id.toString());
+            const indexDoUsuarioNoLike = publicacao.likes.findIndex((e:any) => e.toString() ===usuario._id.toString());
 
-            if (indexUserOnLikes != -1){
-                publicacao.likes.splice(indexUserOnLikes,1);
+            if (indexDoUsuarioNoLike != -1){
+                publicacao.likes.splice(indexDoUsuarioNoLike,1);
                 await PublicacaoModel.findByIdAndUpdate({_id : publicacao._id}, publicacao);
                 return res.status(200).json({msg : 'Publicacao descurtida com sucesso!'});
             }else{
@@ -41,4 +41,4 @@ const likesEndpoint = async(req : NextApiRequest, res : NextApiResponse<Resposta
         return res.status(500).json({erro : 'Ocorreu um erro ao dar like!'});
     }
 }
-export default politicaCORS(validarTokenJWT(conectarMongoDB(likesEndpoint)));
+export default politicaCORS(validarTokenJWT(conectarMongoDB(likeEndpoint)));

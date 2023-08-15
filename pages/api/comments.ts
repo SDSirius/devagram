@@ -10,8 +10,8 @@ const commentEndpoint = async (req : NextApiRequest, res : NextApiResponse<Respo
     try{
         if(req.method === 'PUT'){
             const {userId, id} = req.query;
-            const loggedUser = await UserModel.findById(userId);
-            if(!loggedUser){
+            const usuarioLogado = await UserModel.findById(userId);
+            if(!usuarioLogado){
                 return res.status(400).json({erro : 'Usuário nao encontrado'});
             }
             const publicacao = await PublicacaoModel.findById(id);
@@ -22,12 +22,12 @@ const commentEndpoint = async (req : NextApiRequest, res : NextApiResponse<Respo
             if(!req.body || !req.body.comentario || req.body.comentario.length < 2){
                 return res.status(400).json({erro : 'Comentário Invalido!'});
             }
-            const comment = {
-                idUser : loggedUser._id,
-                nome : loggedUser.nome,
+            const comentario = {
+                idUser : usuarioLogado._id,
+                nome : usuarioLogado.nome,
                 comentario : req.body.comentario
             }
-            publicacao.comentarios.push(comment);
+            publicacao.comentarios.push(comentario);
             await PublicacaoModel.findByIdAndUpdate({_id : publicacao._id }, publicacao);
             return res.status(200).json({msg : 'Comentario adicionado com sucesso'});
         }

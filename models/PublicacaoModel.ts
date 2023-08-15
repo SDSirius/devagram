@@ -1,7 +1,7 @@
 import mongoose, {Schema} from "mongoose";
 
 const PublicacaoSchema = new Schema({
-    idUser : {type : String, requred : true},
+    idUsuario : {type : String, requred : true},
     descricao : {type : String, requred : true},
     foto : {type : String, requred : true},
     data : {type : Date,  required : true},

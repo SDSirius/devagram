@@ -26,13 +26,13 @@ const handler = nc()
                 return res.status(400).json({erro : 'Senha Inválida'});
             }
             
-            const userSameEmail = await UserModel.find({email : usuario.email});
-            if(userSameEmail && userSameEmail.length > 0){
+            const usuariosComMesmoEmail  = await UserModel.find({email : usuario.email});
+            if(usuariosComMesmoEmail  && usuariosComMesmoEmail .length > 0){
                 return res.status(400).json({erro : 'E-mail ja cadastrado!'})
             }
             const image = await uploadImagesCosmic(req);
 
-            const userToBeSaved = {
+            const usuarioASerSalvo  = {
                 nome : usuario.nome,
                 email : usuario.email,
                 senha : md5(usuario.senha),
@@ -40,7 +40,7 @@ const handler = nc()
             }
 
 
-            await UserModel.create(userToBeSaved);
+            await UserModel.create(usuarioASerSalvo );
             return res.status(200).json({msg : 'Usuário criado com sucesso!'});
     }catch(e:any){
         console.log(e);
