@@ -22,7 +22,7 @@ const followEndpoint = async (req : NextApiRequest, res : NextApiResponse<Respos
                 return res.status(400).json({erro : 'Usuário destino nao reconhecido'});
             }
 
-            const euJaSigoEsseUsuario = await FollowingModel.find({usuarioId : usuarioLogado._id, 
+            const euJaSigoEsseUsuario = await FollowingModel.find({idUsuario : usuarioLogado._id, 
                 usuarioSeguidoId : usuarioASerSeguido._id});
 
             if(euJaSigoEsseUsuario && euJaSigoEsseUsuario.length > 0){
@@ -41,7 +41,7 @@ const followEndpoint = async (req : NextApiRequest, res : NextApiResponse<Respos
             }else{
 
                 const seguidor = {
-                    usuarioId : usuarioLogado._id, 
+                    idUsuario : usuarioLogado._id, 
                     usuarioSeguidoId : usuarioASerSeguido._id
                 };
                 
